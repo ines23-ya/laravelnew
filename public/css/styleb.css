@@ -1,0 +1,67 @@
+/* ==== Pusatkan Form Login ==== */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('/images/background.jpg') no-repeat center center/cover; 
+}
+
+/* ==== Kotak Form Login dengan Background ==== */
+.login-box {
+    background: rgba(0, 0, 0, 0.7);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+}
+
+.login-box h1 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* ==== Input Form ==== */
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: #f5f5dc;
+    color: black;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* ==== Tombol Login (Tengah) ==== */
+.button-group button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #007bff;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 15px; /* Diberi Jarak */
+}
+
+.button-group button:hover {
+    background: #0056b3;
+}
+
+/* ==== Link Sign Up (Jarak Ditambah) ==== */
+.sign-up-container {
+    margin-top: 15px; /* Tambahkan Jarak dari Tombol */
+}
+
+.sign-up-container a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.sign-up-container a:hover {
+    text-decoration: underline;
+}
