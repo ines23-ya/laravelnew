@@ -80,6 +80,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/kontruksi/store', [KontruksiController::class, 'store'])->name('kontruksi.store');
     Route::get('/hasilkontrak', [KontruksiController::class, 'hasil'])->name('hasilkontrak');
     Route::get('/kontruksi/pilih', [KontruksiController::class, 'pilih'])->name('kontruksi.pilih');
+    Route::get('/kontruksi/hasil', [KontruksiController::class, 'hasil'])->name('reports.hasilkontrak');
+    Route::get('/kontrak/export-excel', [KontruksiController::class, 'exportExcel'])->name('kontrak.exportExcel');
+Route::get('/kontrak/export-pdf', [KontruksiController::class, 'exportPDF'])->name('kontrak.exportPDF');
+
 
     // 📄 Kontrak
     Route::get('/kontrak/input', [KontrakController::class, 'create'])->name('kontrak.create');

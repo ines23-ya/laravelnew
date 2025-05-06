@@ -47,12 +47,12 @@
     }
 
     footer {
-  color: rgb(20, 7, 66);
-  text-align: center;
-  font-size: 14px;
-  padding: 20px 0;
-  margin-bottom: 20px; /* Tambahan space bawah */
-}
+      color: rgb(20, 7, 66);
+      text-align: center;
+      font-size: 14px;
+      padding: 20px 0;
+      margin-bottom: 20px;
+    }
 
     input[type=number]::-webkit-outer-spin-button,
     input[type=number]::-webkit-inner-spin-button {
@@ -102,22 +102,22 @@
 
         <div class="mb-3">
           <label class="form-label">Unsur</label>
-          <select class="form-select" name="unsur" required>
+          <select class="form-select" name="unsur_id" required>
             <option value="">Pilih</option>
-            <option value="Non Rutin">Non Rutin</option>
-            <option value="Rutin - Sewa">Rutin - Sewa</option>
-            <option value="Rutin Alih Daya">Rutin Alih Daya</option>
-            <option value="Rutin Non Alih Daya">Rutin Non Alih Daya</option>
+            <option value="1">Non Rutin</option>
+            <option value="2">Rutin - Sewa</option>
+            <option value="3">Rutin Alih Daya</option>
+            <option value="4">Rutin Non Alih Daya</option>
           </select>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Fungsi</label>
-          <select class="form-select" name="fungsi" required>
+          <select class="form-select" name="fungsi_id" required>
             <option value="">Pilih</option>
-            <option value="K2LH">K2LH</option>
-            <option value="Tata Usaha">Tata Usaha</option>
-            <option value="Transmisi">Transmisi</option>
+            <option value="1">K2LH</option>
+            <option value="2">Tata Usaha</option>
+            <option value="3">Transmisi</option>
           </select>
         </div>
 
@@ -136,6 +136,7 @@
             <input type="text" class="form-control" name="no_skko" placeholder="Lanjutan No SKKO" required>
           </div>
         </div>
+
         <div class="mb-3">
           <label class="form-label">Pekerjaan</label>
           <input type="text" class="form-control" name="pekerjaan" required>

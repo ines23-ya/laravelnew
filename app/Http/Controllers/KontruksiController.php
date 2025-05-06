@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\KontrakExport;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KontruksiController extends Controller
 {
@@ -10,9 +14,6 @@ class KontruksiController extends Controller
     {
         $no_kontrak = $request->query('no_kontrak');
         $data_pbj = session('data_pbj', []);
-
-        // Jika ingin filter berdasarkan no_kontrak, aktifkan ini:
-        // $data_pbj = collect($data_pbj)->where('no_kontrak', $no_kontrak)->all();
 
         return view('halkontruksi', compact('data_pbj', 'no_kontrak'));
     }
@@ -31,7 +32,6 @@ class KontruksiController extends Controller
 
         $no_kontrak = trim(strtolower($validated['nomor_kontrak']));
 
-        // Ambil data dari PBJ
         $pbjData = collect(session('data_pbj', []))->first(function ($pbj) use ($no_kontrak) {
             return isset($pbj['no_kontrak']) && trim(strtolower($pbj['no_kontrak'])) === $no_kontrak;
         });
@@ -70,7 +70,28 @@ class KontruksiController extends Controller
 
     public function hasil()
     {
-        $kontraks = session('data_kontrak', []);
+        $kontrak = session('data_kontrak', []);
         return view('hasilkontrak', compact('kontrak'));
+    }
+
+    public function pilih(Request $request)
+    {
+        $no_kontrak = $request->query('no_kontrak');
+        return view('inputkontrak', compact('no_kontrak'));
+    }
+
+    // EXPORT TO EXCEL
+    public function exportExcel()
+    {
+        $data = session('data_kontrak', []);
+        return Excel::download(new KontrakExport(collect($data)), 'data_kontrak.xlsx');
+    }
+
+    // EXPORT TO PDF
+    public function exportPDF()
+    {
+        $data = session('data_kontrak', []);
+        $pdf = Pdf::loadView('exports.kontrak_pdf', ['kontrak' => $data]);
+        return $pdf->download('data_kontrak.pdf');
     }
 }

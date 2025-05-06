@@ -59,6 +59,7 @@
             border-collapse: collapse;
             width: 95%;
             background-color: white;
+            color: black;
         }
 
         th, td {
@@ -74,6 +75,7 @@
 
         .btn-group {
             margin-top: 20px;
+            text-align: center;
         }
 
         .btn-group a {
@@ -83,6 +85,7 @@
             text-decoration: none;
             font-weight: bold;
             color: white;
+            display: inline-block;
         }
 
         .btn-back {
@@ -91,6 +94,13 @@
 
         .btn-edit {
             background-color: #2d6a4f;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: white;
         }
     </style>
 </head>
@@ -110,6 +120,16 @@
 <div class="container">
     @php use Carbon\Carbon; @endphp
 
+    <!-- Judul -->
+    <h2>Tabel Hasil Kontrak</h2>
+
+    <!-- Tombol Download -->
+    <div class="btn-group" style="margin-bottom: 20px;">
+        <a href="{{ route('kontrak.exportExcel') }}" class="btn-edit" style="background-color: #0c9439;">Download Excel</a>
+        <a href="{{ route('kontrak.exportPDF') }}" class="btn-edit" style="background-color: #f50820;">Download PDF</a>
+    </div>
+
+    <!-- Tabel Data -->
     <table>
         <thead>
             <tr>
@@ -125,7 +145,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($kontraks as $index => $kontrak)
+            @foreach ($kontrak as $index => $kontrak)
             <tr>
                 <td>{{ $index + 1 }}</td>
                 <td>{{ $kontrak['pekerjaan'] ?? '-' }}</td>
@@ -171,6 +191,7 @@
         </tbody>
     </table>
 
+    <!-- Tombol Navigasi -->
     <div class="btn-group">
         <a href="{{ route('halkontruksi') }}" class="btn-back">Back</a>
         <a href="{{ route('kontrak.create') }}" class="btn-edit">Edit</a>
