@@ -6,15 +6,20 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
+        // Menambahkan kolom jika belum ada
         Schema::table('users', function (Blueprint $table) {
-            $table->string('konpass')->nullable()->change(); // Ubah jadi nullable
+            // Menambahkan kolom 'konpass' jika belum ada
+            if (!Schema::hasColumn('users', 'konpass')) {
+                $table->string('konpass')->nullable(); // Menambahkan kolom 'konpass' nullable
+            }
         });
     }
 
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('konpass')->change(); // Kembalikan ke sebelumnya jika rollback
+            // Menghapus kolom 'konpass' saat rollback
+            $table->dropColumn('konpass');
         });
     }
 };
