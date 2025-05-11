@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <title>Halaman Pengadaan</title>
@@ -13,7 +14,7 @@
         }
 
         body {
-            background: url('{{ asset("assets/bg.jpg") }}') no-repeat center center fixed;
+            background: url('{{ asset('assets/bg.jpg') }}') no-repeat center center fixed;
             background-size: cover;
             height: 100vh;
             padding-top: 80px;
@@ -99,7 +100,8 @@
             margin-top: 10px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #999;
             padding: 8px;
         }
@@ -122,59 +124,23 @@
         .btn-pilih:hover {
             background-color: #007acc;
         }
-        
-    footer {
-      background-color: #1a1a2e;
-      color: white;
-      text-align: center;
-      padding: 15px 0;
-      font-size: 14px;
-    }
 
+        footer {
+            background-color: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+        }
     </style>
 </head>
+
 <body>
 
-<nav class="navbar">
-    <ul>
-        <li><a href="#">👤 {{ Auth::user()->username }}</a></li>
-        <li><a href="#">Dashboard</a></li>
-        <li><a href="{{ route('pengadaan') }}">Pengadaan</a></li>
-        <li><a href="{{ route('pengadaan.reports') }}">Reports</a></li>
-        
-        <li>
-            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        </li>
-    </ul>
-</nav>
 
-<div class="container">
-    <h2>Halaman Pengadaan</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>No</th>
-            <th>Unsur</th>
-            <th>Fungsi</th>
-            <th>No PRK</th>
-            <th>Edit</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td>{{ is_array(session('form_data.unsur')) ? implode(', ', session('form_data.unsur')) : session('form_data.unsur', '-') }}</td>
-            <td>{{ session('form_data.fungsi', '-') }}</td>
-            <td>{{ session('form_data.no_prk', '-') }}</td>
-            <td>
-                <a href="{{ route('pbj.create') }}" class="btn-pilih">Pilih</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    @yield('content')
+
+
 </body>
+
 </html>

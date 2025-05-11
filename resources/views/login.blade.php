@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +17,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .login-container {
             padding: 20px;
             border-radius: 10px;
@@ -23,14 +25,17 @@
             width: 350px;
             color: white;
         }
+
         .form-control {
             margin-bottom: 10px;
             border-radius: 50px;
-            padding-right: 40px; /* Ruang untuk ikon mata */
+            padding-right: 40px; /* Space for the eye icon */
         }
+
         .password-container {
             position: relative;
         }
+
         .toggle-password {
             position: absolute;
             right: 15px;
@@ -39,6 +44,7 @@
             cursor: pointer;
             color: gray;
         }
+
         .login-btn {
             width: 50%;
             background-color: #17a2b8;
@@ -47,42 +53,72 @@
             border-radius: 50px;
             color: white;
         }
-        .signup-link, .forgot-password {
+
+        .signup-link,
+        .forgot-password {
             display: block;
             margin-top: 10px;
             color: white;
             text-decoration: none;
         }
+
         .forgot-password:hover {
             text-decoration: underline;
         }
+
+        /* Error message styling */
+      .error-message {
+    color: #ff3333; /* Red color for error */
+    font-size: 16px; /* Increased font size */
+    font-weight: bold; /* Make the text bold */
+    margin-bottom: 15px;
+}
+
     </style>
 </head>
+
 <body>
 
     <div class="login-container">
         <h3>Login</h3>
+
+        <!-- Display error message if login fails -->
+        @if(session('error'))
+            <div class="error-message">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <!-- Display validation errors from the backend -->
+        @if ($errors->any())
+            <div class="error-message">
+                @foreach ($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+
         <form action="{{ route('login') }}" method="POST">
             @csrf
             <input type="text" name="username" class="form-control" placeholder="Username" required>
 
             <div class="password-container">
                 <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
-                <i class="fa-regular fa-eye toggle-password" id="togglePassword"></i> <!-- Ikon mata -->
+                <i class="fa-regular fa-eye toggle-password" id="togglePassword"></i> <!-- Eye icon -->
             </div>
 
             <button type="submit" class="login-btn">Login</button>
 
-            <!-- Link Lupa Kata Sandi -->
+            <!-- Link for password recovery -->
             <a href="{{ route('password.request') }}" class="forgot-password">Lupa Kata Sandi?</a>
 
-            <!-- Link ke Halaman Register -->
+            <!-- Link to the register page -->
             <a href="{{ route('register') }}" class="signup-link">Sign up</a>
         </form>
     </div>
 
     <script>
-        // Toggle Password Visibility
+        // Toggle password visibility
         document.getElementById("togglePassword").addEventListener("click", function () {
             let passwordInput = document.getElementById("password");
             if (passwordInput.type === "password") {
@@ -98,4 +134,5 @@
     </script>
 
 </body>
+
 </html>

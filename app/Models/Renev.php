@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +11,7 @@ class Renev extends Model
     protected $fillable = [
         'unsur_id',
         'fungsi_id',
-        'prk_id',
+        'no_prk', // This is just a string column, not a relationship
         'no_skko',
         'pekerjaan',
         'satuan',
@@ -30,10 +29,5 @@ class Renev extends Model
     public function fungsi()
     {
         return $this->belongsTo(Fungsi::class);
-    }
-
-    public function prk()
-    {
-        return $this->belongsTo(Prk::class);
     }
 }

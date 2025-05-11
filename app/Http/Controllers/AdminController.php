@@ -8,19 +8,46 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::all(); // Ambil semua akun dari database
+        $users = User::all(); // Get all users from the database
         return view('haladmin', compact('users'));
     }
 
     public function show($id)
     {
-        $user = User::findOrFail($id); // Ambil detail akun berdasarkan ID
-        return response()->json($user); // Kirim data dalam format JSON
+        $user = User::findOrFail($id); // Get user details based on ID
+        return response()->json($user); // Return user data as JSON for AJAX
     }
 
-    public function haladmin()
+    public function update(Request $request, $id)
     {
-        $users = User::all(); // Ambil semua akun untuk tampilan haladmin
-        return view('haladmin', compact('users')); // Pastikan view-nya tersedia
+        // Validate incoming request data
+        $request->validate([
+            'username' => 'required|string|max:255',
+            'nik' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'no_hp' => 'required|string|max:15',
+            'bidang' => 'required|string|max:50',
+        ]);
+
+        // Find the user by ID and update
+        $user = User::findOrFail($id);
+        $user->update([
+            'username' => $request->username,
+            'nik' => $request->nik,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'bidang' => $request->bidang,
+        ]);
+
+        return response()->json(['success' => 'Akun berhasil diperbarui']);
+    }
+
+    public function destroy($id)
+    {
+        // Find the user by ID and delete
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json(['success' => 'Akun berhasil dihapus']);
     }
 }

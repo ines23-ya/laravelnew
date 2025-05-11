@@ -6,12 +6,17 @@
     <style>
         body {
             font-family: sans-serif;
-            font-size: 12px;
+            font-size: 10px; /* Reduced font size */
+            margin: 0;
+            padding: 0;
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 14px; /* Smaller header font */
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         table {
@@ -27,11 +32,41 @@
         th {
             background-color: #f0f0f0;
             font-weight: bold;
+            font-size: 10px;
         }
 
         th, td {
-            padding: 6px;
+            padding: 5px; /* Reduced padding */
             text-align: center;
+        }
+
+        td {
+            font-size: 9px; /* Smaller font size for data */
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Style for page breaks to ensure content doesn't overflow */
+        .page-break {
+            page-break-before: always;
+        }
+
+        /* Making sure content fits within the page */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .table-header {
+                font-size: 16px;
+                font-weight: bold;
+                text-align: center;
+                margin-bottom: 20px;
+            }
         }
     </style>
 </head>
@@ -57,16 +92,16 @@
         <tbody>
             @foreach($renevData as $data)
                 <tr>
-                    <td>{{ $data['unsur'] ?? '-' }}</td>
-                    <td>{{ $data['fungsi'] ?? $data['fungsi_manual'] ?? '-' }}</td>
-                    <td>{{ $data['pekerjaan'] ?? '-' }}</td>
-                    <td>{{ $data['satuan'] ?? '-' }}</td>
-                    <td>{{ $data['volume'] ?? '-' }}</td>
-                    <td>{{ isset($data['total_material']) ? number_format($data['total_material'], 0, ',', '.') : '-' }}</td>
-                    <td>{{ isset($data['total_jasa']) ? number_format($data['total_jasa'], 0, ',', '.') : '-' }}</td>
-                    <td>{{ isset($data['jumlah_pagu']) ? number_format($data['jumlah_pagu'], 0, ',', '.') : '-' }}</td>
-                    <td>{{ $data['no_skko'] ?? '-' }}</td>
-                    <td>{{ $data['no_prk'] ?? '-' }}</td>
+                    <td>{{ $data['unsur'] ?? 'N/A' }}</td>
+                    <td>{{ $data['fungsi'] ?? 'N/A' }}</td>
+                    <td>{{ $data['pekerjaan'] ?? 'N/A' }}</td>
+                    <td>{{ $data['satuan'] ?? 'N/A' }}</td>
+                    <td>{{ $data['volume'] ?? 'N/A' }}</td>
+                    <td>{{ isset($data['total_material']) ? number_format($data['total_material'], 0, ',', '.') : 'N/A' }}</td>
+                    <td>{{ isset($data['total_jasa']) ? number_format($data['total_jasa'], 0, ',', '.') : 'N/A' }}</td>
+                    <td>{{ isset($data['jumlah_pagu']) ? number_format($data['jumlah_pagu'], 0, ',', '.') : 'N/A' }}</td>
+                    <td>{{ $data['no_skko'] ?? 'N/A' }}</td>
+                    <td>{{ $data['no_prk'] ?? 'N/A' }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -34,23 +34,37 @@ class AuthController extends Controller
 
         return redirect()->route('success')->with('success', 'Akun berhasil dibuat!');
     }
+//login umum
 
-    // Login umum
-    public function login(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-        ]);
+public function login(Request $request)
+{
+    // Validate the input fields
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+    ]);
 
-        if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            $user_detail = User::where('username', $request->username)->first();
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!')->with('user_detail', $user_detail);
-        }
+    // Check if the user exists by the provided username
+    $user = User::where('username', $request->username)->first();
 
-        return back()->withErrors(['username' => 'Username atau password salah']);
+    if (!$user) {
+        // If the user is not found, display an error message for account not found
+        return back()->withErrors(['username' => 'Akun Anda tidak ditemukan.']);
     }
+
+    // Attempt to authenticate the user with the given username and password
+    if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
+        // Regenerate the session to prevent session fixation
+        $request->session()->regenerate();
+
+        // Redirect the user to the dashboard if login is successful
+        return redirect()->route('dashboard')->with('success', 'Login berhasil!');
+    }
+
+    // If authentication fails (incorrect password), show an error message
+    return back()->withErrors(['username' => 'Username atau password salah']);
+}
+
 
     // Logout
     public function logout(Request $request)
@@ -63,72 +77,118 @@ class AuthController extends Controller
     }
 
     // Login khusus RENEV
-    public function loginRenev(Request $request)
-    {
-        $request->validate([
-            'username' => 'required|string',
-            'password' => 'required|string',
-            'bidang'   => 'required| string',
-        ]);
-
-        if (Auth::attempt(['username' => $request->username,'bidang' => $request->bidang, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->route('halrenev')->with('success', 'Login berhasil!');
-        }
-
-        return back()->withErrors(['username' => 'Username atau password salah']);
-    }
-
-    // Login khusus KEUANGAN
-    public function loginKeuangan(Request $request)
-    {
-        if (Auth::attempt(['username' => $request->username,'bidang' => $request->bidang, 'password' => $request->password])) {
-            return redirect()->route('keuangan');
-        }
-
-        return back()->withErrors(['login' => 'Username atau password salah.']);
-    }
-
-    // Login khusus PENGADAAN
-    public function loginPengadaan(Request $request)
-    {
-        if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang,'password' => $request->password])) {
-            return redirect()->route('pengadaan');
-        }
-
-        return back()->withErrors(['login' => 'Username atau password salah.']);
-    }
-
-    // 🔧 FIXED: Login khusus KONSTRUKSI
-    
-    public function loginKontruksi(Request $request)
-    {
-        if (Auth::attempt(['username' => $request->username,'bidang' => $request->bidang, 'password' => $request->password])) {
-            $request->session()->regenerate();
-            return redirect()->route('halkontruksi')->with('success', 'Login berhasil!');
-        }
-
-        return back()->withErrors(['login' => 'Username atau password salah.']);
-    }
-    public function create()
+public function loginRenev(Request $request)
 {
-    return view('pilihpengadaan');
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+        'bidang'   => 'required|string',
+    ]);
+
+    // Check if the user exists for the specified bidang
+    $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
+
+    if (!$user) {
+        // User not found or bidang mismatch
+        return back()->with('error', 'Akun Anda tidak ditemukan atau bidang yang Anda pilih salah. Disini buka bidang Anda.');
+    }
+
+    // Attempt login if user exists
+    if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
+        $request->session()->regenerate();
+        return redirect()->route('halrenev')->with('success', 'Login berhasil!');
+    }
+
+    // Invalid credentials
+    return back()->withErrors(['username' => 'Username atau password salah']);
 }
- // Login khusus Admin
- public function loginAdmin(Request $request)
- {
-     $request->validate([
-         'username' => 'required|string',
-         'password' => 'required|string',
-         'bidang'   => 'required| string',
-     ]);
 
-     if (Auth::attempt(['username' => $request->username,'bidang' => $request->bidang, 'password' => $request->password])) {
-         $request->session()->regenerate();
-         return redirect()->route('haladmin')->with('success', 'Login berhasil!');
-     }
+// Login khusus KEUANGAN
+public function loginKeuangan(Request $request)
+{
+    // Check if the user exists for the specified bidang
+    $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
 
-     return back()->withErrors(['username' => 'Username atau password salah']);
- }
+    if (!$user) {
+        // User not found or bidang mismatch
+        return back()->with('error', 'Akun Anda tidak ditemukan atau bidang yang Anda pilih salah. Disini buka bidang Anda.');
+    }
+
+    // Attempt login if user exists
+    if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
+        return redirect()->route('keuangan');
+    }
+
+    // Invalid credentials
+    return back()->withErrors(['login' => 'Username atau password salah.']);
+}
+
+// Login khusus PENGADAAN
+public function loginPengadaan(Request $request)
+{
+    // Check if the user exists for the specified bidang
+    $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
+
+    if (!$user) {
+        // User not found or bidang mismatch
+        return back()->with('error', 'Akun Anda tidak ditemukan atau bidang yang Anda pilih salah. Disini buka bidang Anda.');
+    }
+
+    // Attempt login if user exists
+    if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
+        return redirect()->route('pengadaan');
+    }
+
+    // Invalid credentials
+    return back()->withErrors(['login' => 'Username atau password salah.']);
+}
+
+// Login khusus KONSTRUKSI
+public function loginKontruksi(Request $request)
+{
+    // Check if the user exists for the specified bidang
+    $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
+
+    if (!$user) {
+        // User not found or bidang mismatch
+        return back()->with('error', 'Akun Anda tidak ditemukan atau bidang yang Anda pilih salah. Disini buka bidang Anda.');
+    }
+
+    // Attempt login if user exists
+    if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
+        $request->session()->regenerate();
+        return redirect()->route('halkontruksi')->with('success', 'Login berhasil!');
+    }
+
+    // Invalid credentials
+    return back()->withErrors(['login' => 'Username atau password salah.']);
+}
+
+// Login khusus Admin
+public function loginAdmin(Request $request)
+{
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+        'bidang'   => 'required|string',
+    ]);
+
+    // Check if the user exists for the specified bidang
+    $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
+
+    if (!$user) {
+        // User not found or bidang mismatch
+        return back()->with('error', 'Akun Anda tidak ditemukan atau bidang yang Anda pilih salah. Disini buka bidang Anda.');
+    }
+
+    // Attempt login if user exists
+    if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
+        $request->session()->regenerate();
+        return redirect()->route('haladmin')->with('success', 'Login berhasil!');
+    }
+
+    // Invalid credentials
+    return back()->withErrors(['username' => 'Username atau password salah']);
+}
 
 }

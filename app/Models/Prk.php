@@ -9,12 +9,11 @@ class Prk extends Model
 {
     use HasFactory;
 
-    // Tentukan kolom-kolom yang bisa diisi secara massal (Mass Assignment)
-    protected $fillable = ['nama']; // Kolom 'nama' yang dapat diisi
+    protected $fillable = ['nomor'];
 
-    // Relasi dengan model lain, misalnya Prk memiliki banyak Fungsi
-    public function funksis()
+
+    public function fungsis()
     {
-        return $this->hasMany(Fungsi::class); // Relasi 'hasMany' dengan model Fungsi
+        return $this->hasMany(Fungsi::class);
     }
 }

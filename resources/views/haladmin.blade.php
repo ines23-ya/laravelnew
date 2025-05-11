@@ -86,7 +86,6 @@
             <div class="modal-body">
                 <p><strong>Nama:</strong> <span id="accountName"></span></p>
                 <p><strong>Email:</strong> <span id="accountEmail"></span></p>
-                <p><strong>Role:</strong> <span id="accountRole"></span></p>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-primary" onclick="openEditModal()">Edit</button>
@@ -140,11 +139,6 @@
                     <input type="text" id="editNoHp" class="form-control" required>
                 </div>
 
-                <div class="mb-3">
-                    <label for="editRole" class="form-label">Role</label>
-                    <input type="text" id="editRole" class="form-control" required>
-                </div>
-
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-success">Simpan</button>
@@ -166,7 +160,6 @@
             selectedUserId = data.id;
             $('#accountName').text(data.username);
             $('#accountEmail').text(data.email);
-            $('#accountRole').text(data.role);
             $('#accountModal').modal('show');
         });
     }
@@ -179,7 +172,6 @@
             $('#editBidang').val(data.bidang);
             $('#editEmail').val(data.email);
             $('#editNoHp').val(data.no_hp);
-            $('#editRole').val(data.role);
 
             $('#accountModal').modal('hide');
             $('#editAccountModal').modal('show');
@@ -194,8 +186,7 @@
             nik: $('#editNik').val(),
             bidang: $('#editBidang').val(),
             email: $('#editEmail').val(),
-            no_hp: $('#editNoHp').val(),
-            role: $('#editRole').val()
+            no_hp: $('#editNoHp').val()
         };
 
         $.ajax({

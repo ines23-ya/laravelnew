@@ -59,21 +59,37 @@ Route::middleware('auth')->group(function () {
     })->name('logout');
 
     // 🧑‍💼 Admin
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin');
+   
     Route::get('/admin/account/{id}', [AdminController::class, 'show'])->name('admin.account');
-    Route::get('/haladmin', [AdminController::class, 'haladmin'])->name('haladmin');
+    Route::get('/haladmin', [AdminController::class, 'index'])->name('haladmin');
+     Route::put('/admin/account/{id}', [AdminController::class, 'update'])->name('admin.account.update'); // Update account
+    Route::delete('/admin/account/{id}', [AdminController::class, 'destroy'])->name('admin.account.delete'); // Delete account
 
-    // 📌 Renev
-    Route::get('/halrenev', [RenevController::class, 'index'])->name('halrenev');
-    Route::post('/halrenev', [RenevController::class, 'store'])->name('halrenev.store');
-    Route::get('/halrenev/hasil', [RenevController::class, 'hasil'])->name('halrenev.hasil');
+   // 📌 Renev Routes
+Route::get('/halrenev', [RenevController::class, 'index'])->name('halrenev');
+Route::post('/halrenev', [RenevController::class, 'store'])->name('halrenev.store');
+Route::get('/halrenev/hasil', [RenevController::class, 'hasil'])->name('halrenev.hasil');
 
-    // 📁 Pengadaan
-    Route::get('/pengadaan', fn() => view('pengadaan'))->name('pengadaan');
-    Route::get('/pilihpengadaan', [PbjUploadController::class, 'create'])->name('pbj.create');
+// 📊 Renev Reports Routes (Editing and Managing Reports)
+Route::get('/reports', [RenevController::class, 'reports'])->name('halrenev.reports');
+Route::get('/reports/edit/{id}', [RenevController::class, 'reportsEdit'])->name('halrenev.reports.edit');
+Route::put('/reports/update/{id}', [RenevController::class, 'reportsUpdate'])->name('halrenev.reports.update');
+Route::delete('/reports/destroy/{id}', [RenevController::class, 'reportsDestroy'])->name('halrenev.reports.destroy'); // Fixed delete route
+
+// 📊 Reports Export Routes
+Route::get('/halrenev/export/excel', [ReportsController::class, 'exportExcel'])->name('halrenev.export.excel');
+Route::get('/halrenev/export/pdf', [ReportsController::class, 'exportPDF'])->name('halrenev.export.pdf');
+
+
+ Route::get('/pengadaan', [PbjUploadController::class, 'index'])->name('pengadaan');
+    Route::get('/pengadaan/create', [PbjUploadController::class, 'create'])->name('pbj.create');
+
+
+    // Route::get('/pilihpengadaan', [PbjUploadController::class, 'create'])->name('pbj.create');
     Route::post('/pilihpengadaan', [PbjUploadController::class, 'store'])->name('pbj.store');
-    Route::get('/hasilpengadaan', [PbjUploadController::class, 'index'])->name('hasil.pengadaan');
+    Route::get('/pengadaan/reports', [PbjUploadController::class, 'indexs'])->name('pengadaan.reports');
     Route::get('/download/{filename}', [PbjUploadController::class, 'download'])->name('pbj.download');
+
 
     // 🏗️ Kontruksi
     Route::get('/halkontruksi', [KontruksiController::class, 'index'])->name('halkontruksi');
@@ -98,15 +114,9 @@ Route::get('/kontrak/export-pdf', [KontruksiController::class, 'exportPDF'])->na
     Route::get('/export-keuangan-excel', [PembayaranController::class, 'exportExcel'])->name('export.keuangan.excel');
 
     // 📊 Reports
-    Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
+    //Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
     Route::get('/reports/export/excel', [ReportsController::class, 'exportExcel'])->name('reports.export.excel');
     Route::get('/reports/export/pdf', [ReportsController::class, 'exportPDF'])->name('reports.export.pdf');
-
-    // 📑 Reports Pengadaan
-    Route::get('/reports/pengadaan', [ReportPengadaanController::class, 'index'])->name('pengadaan.reports');
-    Route::get('/reports/pengadaan/export-excel', [ReportPengadaanController::class, 'exportExcel'])->name('pengadaan.export.excel');
-    Route::get('/reports/pengadaan/export-pdf', [ReportPengadaanController::class, 'exportPDF'])->name('pengadaan.export.pdf');
-    Route::get('/reports/pengadaan/download/{filename}', [ReportPengadaanController::class, 'download'])->name('pengadaan.download');
 
     
 });
