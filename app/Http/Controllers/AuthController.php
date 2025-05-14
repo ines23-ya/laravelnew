@@ -106,6 +106,12 @@ public function loginRenev(Request $request)
 // Login khusus KEUANGAN
 public function loginKeuangan(Request $request)
 {
+    $request->validate([
+        'username' => 'required|string',
+        'password' => 'required|string',
+        'bidang'   => 'required|string',
+    ]);
+
     // Check if the user exists for the specified bidang
     $user = User::where('username', $request->username)->where('bidang', $request->bidang)->first();
 
@@ -116,13 +122,13 @@ public function loginKeuangan(Request $request)
 
     // Attempt login if user exists
     if (Auth::attempt(['username' => $request->username, 'bidang' => $request->bidang, 'password' => $request->password])) {
-        return redirect()->route('keuangan');
+        $request->session()->regenerate();
+        return redirect()->route('keuangan')->with('success', 'Login berhasil!');
     }
 
     // Invalid credentials
-    return back()->withErrors(['login' => 'Username atau password salah.']);
+    return back()->withErrors(['username' => 'Username atau password salah']);
 }
-
 // Login khusus PENGADAAN
 public function loginPengadaan(Request $request)
 {

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Data Pengadaan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -49,7 +50,7 @@
         }
 
         .container {
-            padding-top: 100px;
+            padding-top: 70px; /* Reduced space from the top */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -58,7 +59,7 @@
         .header-title {
             text-align: center;
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 5px; /* Reduced margin */
         }
 
         h2 {
@@ -71,7 +72,7 @@
         .back-link-wrapper {
             width: 95%;
             max-width: 1200px;
-            margin-bottom: 10px;
+            margin-bottom: 10px; /* Reduced space between the link and table */
             text-align: left;
         }
 
@@ -86,11 +87,44 @@
             text-decoration: underline;
         }
 
+        /* Button Styling */
+        .btn-download {
+            margin-top: 10px; /* Reduced margin from table */
+            margin-bottom: 10px; /* Reduced margin */
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-pdf {
+            background-color: red;
+            color: white;
+        }
+
+        .btn-pdf:hover {
+            background-color: darkred;
+        }
+
+        .btn-excel {
+            background-color: green;
+            color: white;
+        }
+
+        .btn-excel:hover {
+            background-color: darkgreen;
+        }
+
         table {
             background: white;
             border-collapse: collapse;
             width: 95%;
             max-width: 1200px;
+            margin-bottom: 20px; /* Reduced margin between the table and buttons */
         }
 
         table th,
@@ -116,8 +150,7 @@
             <li><a href="{{ route('pengadaan') }}">Pengadaan</a></li>
             <li><a href="{{ route('pengadaan.reports') }}">Reports</a></li>
             <li>
-                <a href="#"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
@@ -134,6 +167,12 @@
             <a href="{{ route('pengadaan') }}" class="back-link">Kembali ke Halaman Pengadaan</a>
         </div>
 
+        <!-- Tombol Download PDF dan Excel -->
+        <div class="action-buttons">
+            <a href="{{ route('pengadaan.download.pdf') }}" class="btn-download btn-pdf">Download PDF</a>
+            <a href="{{ route('pengadaan.download.excel') }}" class="btn-download btn-excel">Download Excel</a>
+        </div>
+
         <table>
             <thead>
                 <tr>
@@ -148,6 +187,7 @@
                     <th>Vendor Pelaksana</th>
                     <th>Nilai Kontrak</th>
                     <th>Dokumen</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -173,11 +213,26 @@
                             <td>
                                 <a href="{{ route('pbj.download', basename($item->dokumen)) }}">Download</a>
                             </td>
+                            <td>
+                                <!-- Ikon Edit -->
+                                <a href="{{ route('pengadaan.edit', $item->id) }}" class="btn-edit" title="Edit">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                  
+                                <!-- Ikon Delete -->
+                                <form action="{{ route('pengadaan.destroy', $item->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-delete" onclick="return confirm('Apakah Anda yakin ingin menghapus data ini?')" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 @else
                     <tr>
-                        <td colspan="11" style="text-align: center;">Belum ada data pengadaan.</td>
+                        <td colspan="12" style="text-align: center;">Belum ada data pengadaan.</td>
                     </tr>
                 @endif
             </tbody>

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Halaman Konstruksi</title>
     <style>
+       <style>
         * {
             margin: 0;
             padding: 0;
@@ -11,15 +12,10 @@
             font-family: 'Inter', sans-serif;
         }
 
-        html, body {
-            height: 100%;
-        }
-
         body {
-            display: flex;
-            flex-direction: column;
             background: url('{{ asset("assets/bg.jpg") }}') no-repeat center center fixed;
             background-size: cover;
+            min-height: 100vh;
             color: white;
         }
 
@@ -54,18 +50,17 @@
         }
 
         .container {
-            flex: 1;
-            padding-top: 120px;
-            padding-bottom: 40px;
+            padding-top: 70px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding-bottom: 40px;
         }
 
         h2 {
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-shadow: 1px 1px 3px black;
         }
 
@@ -84,56 +79,50 @@
         table {
             background: white;
             border-collapse: collapse;
-            width: 300px;
+            width: 100%;
+            max-width: 400px;
             color: black;
+             margin-bottom: 10px;
         }
 
-        table th, table td {
+        table th,
+        table td {
             border: 1px solid black;
-            padding: 8px 10px;
+            padding: 12px;
             text-align: center;
         }
 
         table th {
-            background: #eee;
-        }
-
-        .btn-show {
-            margin-top: 15px;
-            background: orange;
-            padding: 8px 15px;
-            border: none;
-            color: white;
+            background-color: #f2f2f2;
             font-weight: bold;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .btn-show:hover {
-            background: darkorange;
         }
 
         .btn-edit {
-            background-color: #007bff;
+            background-color: #2d6a4f;
             color: white;
             padding: 5px 10px;
             text-decoration: none;
-            border-radius: 4px;
+            border-radius: 6px;
             display: inline-block;
         }
 
         .btn-edit:hover {
-            background-color: #0056b3;
+            background-color: #1b4332;
         }
 
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        .btn-show {
+            margin-top: 20px;
+            background-color: #2d6a4f;
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 6px;
         }
 
-        input[type=number] {
-            -moz-appearance: textfield;
+        .btn-show:hover {
+            background-color: #1b4332;
         }
 
         footer {
@@ -142,7 +131,26 @@
             font-size: 14px;
             padding: 20px 0;
             margin-top: auto;
-            width: 100%;
+        }
+
+        /* Responsivitas */
+        @media (max-width: 768px) {
+            .container {
+                padding-top: 60px;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            .navbar ul {
+                flex-direction: column;
+            }
+
+            .search-box input[type="text"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
         }
     </style>
 </head>
@@ -153,7 +161,7 @@
         <li><a href="#">👤 {{ Auth::user()->username }}</a></li>
         <li><a href="#">Dashboard</a></li>
         <li><a href="{{ route('halkontruksi') }}">Kontruksi</a></li>
-        <li><a href="{{ route('reports.hasilkontrak') }}">Reports</a></li>
+       <li><a href="{{ route('hasilkontrak') }}">Reports</a></li>
         <li><a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
     </ul>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
@@ -171,21 +179,22 @@
             <tr>
                 <th>No</th>
                 <th>No Kontrak</th>
-                <th>Edit</th>
+                <th>Input Data Kontruksi</th>
             </tr>
         </thead>
         <tbody>
-            @forelse ($data_pbj as $index => $item)
+            @forelse ($pengadaan as $index => $item)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $item['no_kontrak'] ?? '-' }}</td>
+                    <td>{{ $item->no_kontrak }}</td>
                     <td>
-                        <a href="{{ url('/kontruksi/pilih') . '?no_kontrak=' . urlencode($item['no_kontrak']) }}" class="btn-edit">Pilih</a>
+                        <!-- Tombol untuk mengarahkan ke halaman input kontruksi -->
+                        <a href="{{ route('halkontruksi.inputkontruksi', ['no_kontrak' => $item->no_kontrak]) }}" class="btn-edit">Input Data Kontruksi</a>
                     </td>
                 </tr>
             @empty
                 <tr>
-                    <td colspan="3">Belum ada data kontrak.</td>
+                    <td colspan="3">Belum ada data no kontrak.</td>
                 </tr>
             @endforelse
         </tbody>

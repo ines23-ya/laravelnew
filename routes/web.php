@@ -75,44 +75,75 @@ Route::get('/reports', [RenevController::class, 'reports'])->name('halrenev.repo
 Route::get('/reports/edit/{id}', [RenevController::class, 'reportsEdit'])->name('halrenev.reports.edit');
 Route::put('/reports/update/{id}', [RenevController::class, 'reportsUpdate'])->name('halrenev.reports.update');
 Route::delete('/reports/destroy/{id}', [RenevController::class, 'reportsDestroy'])->name('halrenev.reports.destroy'); // Fixed delete route
+// 📊 Reports
+Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
+Route::get('/reports/export/excel', [ReportsController::class, 'exportExcel'])->name('reports.export.excel');
+Route::get('/reports/export/pdf', [ReportsController::class, 'exportPDF'])->name('reports.export.pdf');
 
 // 📊 Reports Export Routes
 Route::get('/halrenev/export/excel', [ReportsController::class, 'exportExcel'])->name('halrenev.export.excel');
 Route::get('/halrenev/export/pdf', [ReportsController::class, 'exportPDF'])->name('halrenev.export.pdf');
 
 
- Route::get('/pengadaan', [PbjUploadController::class, 'index'])->name('pengadaan');
-    Route::get('/pengadaan/create', [PbjUploadController::class, 'create'])->name('pbj.create');
 
+// Halaman utama pengadaan
+Route::get('/pengadaan', [PbjUploadController::class, 'index'])->name('pengadaan');
 
-    // Route::get('/pilihpengadaan', [PbjUploadController::class, 'create'])->name('pbj.create');
-    Route::post('/pilihpengadaan', [PbjUploadController::class, 'store'])->name('pbj.store');
-    Route::get('/pengadaan/reports', [PbjUploadController::class, 'indexs'])->name('pengadaan.reports');
-    Route::get('/download/{filename}', [PbjUploadController::class, 'download'])->name('pbj.download');
+// Formulir untuk memilih pengadaan
+Route::get('/pengadaan/create', [PbjUploadController::class, 'create'])->name('pbj.create');
 
+// Menyimpan data pengadaan
+Route::post('/pilihpengadaan', [PbjUploadController::class, 'store'])->name('pbj.store');
 
-    // 🏗️ Kontruksi
-    Route::get('/halkontruksi', [KontruksiController::class, 'index'])->name('halkontruksi');
-    Route::post('/kontruksi/store', [KontruksiController::class, 'store'])->name('kontruksi.store');
-    Route::get('/hasilkontrak', [KontruksiController::class, 'hasil'])->name('hasilkontrak');
-    Route::get('/kontruksi/pilih', [KontruksiController::class, 'pilih'])->name('kontruksi.pilih');
-    Route::get('/kontruksi/hasil', [KontruksiController::class, 'hasil'])->name('reports.hasilkontrak');
-    Route::get('/kontrak/export-excel', [KontruksiController::class, 'exportExcel'])->name('kontrak.exportExcel');
+// Laporan pengadaan
+Route::get('/pengadaan/reports', [PbjUploadController::class, 'indexs'])->name('pengadaan.reports');
+
+// Download dokumen
+Route::get('/download/{filename}', [PbjUploadController::class, 'download'])->name('pbj.download');
+
+// Edit pengadaan
+Route::get('/pengadaan/edit/{id}', [PbjUploadController::class, 'edit'])->name('pengadaan.edit');
+
+// Update pengadaan
+Route::put('/pengadaan/update/{id}', [PbjUploadController::class, 'update'])->name('pengadaan.update');
+
+// Hapus pengadaan
+Route::delete('/pengadaan/destroy/{id}', [PbjUploadController::class, 'destroy'])->name('pengadaan.destroy');
+// Route untuk download PDF
+Route::get('/pengadaan/download/pdf', [PbjUploadController::class, 'downloadPdf'])->name('pengadaan.download.pdf');
+
+// Route untuk download Excel
+Route::get('/pengadaan/download/excel', [PbjUploadController::class, 'downloadExcel'])->name('pengadaan.download.excel');
+
+//kontruksi
+
+// Menampilkan halaman daftar kontruksi berdasarkan no_kontrak
+Route::get('/halkontruksi', [KontruksiController::class, 'index'])->name('halkontruksi');
+
+// Menyimpan data kontruksi
+Route::post('/kontruksi/store', [KontruksiController::class, 'store'])->name('kontruksi.store');
+
+// Menampilkan hasil kontruksi dan laporan
+Route::get('/hasilkontrak', [KontruksiController::class, 'hasil'])->name('hasilkontrak'); // Pastikan nama rute adalah hasilkontrak
+
+// Menampilkan halaman input kontruksi berdasarkan no_kontrak
+Route::get('/kontruksi/inputkontruksi', [KontruksiController::class, 'inputkontruksi'])->name('halkontruksi.inputkontruksi');
+
+// Export data kontruksi ke Excel
+Route::get('/kontrak/export-excel', [KontruksiController::class, 'exportExcel'])->name('kontrak.exportExcel');
+// Export data kontruksi ke PDF
 Route::get('/kontrak/export-pdf', [KontruksiController::class, 'exportPDF'])->name('kontrak.exportPDF');
 
-
-    // 📄 Kontrak
-    Route::get('/kontrak/input', [KontrakController::class, 'create'])->name('kontrak.create');
-    Route::post('/kontrak/store', [KontrakController::class, 'store'])->name('kontrak.store');
-    Route::get('/kontrak', [KontrakController::class, 'index'])->name('kontrak.index');
-
-    // 💰 Keuangan
+// 📄 Kontrak
+Route::get('/kontrak/input', [KontrakController::class, 'create'])->name('kontrak.create');
+Route::post('/kontrak/store', [KontrakController::class, 'store'])->name('kontrak.store');
+Route::get('/kontrak', [KontrakController::class, 'index'])->name('kontrak.index');
+   // 💰 Keuangan
     Route::get('/keuangan', [KeuanganController::class, 'index'])->name('keuangan');
     Route::post('/pembayaran/store', [PembayaranController::class, 'store'])->name('pembayaran.store');
     Route::get('/reportskeuangan', [PembayaranController::class, 'reports'])->name('reportskeuangan');
     Route::get('/export-keuangan-pdf', [PembayaranController::class, 'exportPdf'])->name('export.keuangan.pdf');
     Route::get('/export-keuangan-excel', [PembayaranController::class, 'exportExcel'])->name('export.keuangan.excel');
-
     // 📊 Reports
     //Route::get('/reports', [ReportsController::class, 'index'])->name('reports.index');
     Route::get('/reports/export/excel', [ReportsController::class, 'exportExcel'])->name('reports.export.excel');

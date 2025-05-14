@@ -92,8 +92,8 @@
         <tbody>
             @foreach($renevData as $data)
                 <tr>
-                    <td>{{ $data['unsur'] ?? 'N/A' }}</td>
-                    <td>{{ $data['fungsi'] ?? 'N/A' }}</td>
+                    <td>{{ $data['unsur']['nama'] ?? 'N/A' }}</td>
+                    <td>{{ $data['fungsi']['nama'] ?? 'N/A' }}</td>
                     <td>{{ $data['pekerjaan'] ?? 'N/A' }}</td>
                     <td>{{ $data['satuan'] ?? 'N/A' }}</td>
                     <td>{{ $data['volume'] ?? 'N/A' }}</td>

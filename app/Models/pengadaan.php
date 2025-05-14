@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class pengadaan extends Model
+class Pengadaan extends Model
 {
     use HasFactory;
 
@@ -25,7 +25,7 @@ class pengadaan extends Model
         'jangka_waktu',
     ];
 
-
+    // Ensure that these date fields are treated as Carbon instances
     protected $dates = [
         'tanggal_kontrak',
         'jangka_mulai',
@@ -42,8 +42,18 @@ class pengadaan extends Model
         return $this->belongsTo(Fungsi::class, 'fungsi_id');
     }
 
-    public function renev()
+   
+     public function keuangan()
     {
-        return $this->belongsTo(Renev::class, 'renev_id');
+        return $this->hasMany(Keuangan::class, 'no_kontrak', 'no_kontrak');
     }
+    public function kontruksi()
+    {
+        return $this->hasMany(Kontruksi::class, 'no_kontrak', 'no_kontrak');
+    }
+    public function renev()
+{
+    return $this->belongsTo(Renev::class, 'no_kontrak', 'no_kontrak');
+}
+
 }

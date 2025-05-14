@@ -30,4 +30,21 @@ class Renev extends Model
     {
         return $this->belongsTo(Fungsi::class);
     }
+
+    public function keuangan()
+    {
+        return $this->hasMany(Keuangan::class, 'no_prk', 'no_prk');
+    }
+
+  public function pengadaan()
+{
+    return $this->hasOne(Pengadaan::class, 'no_kontrak', 'no_kontrak');  // Relasi satu-ke-satu dengan Pengadaan
+}
+
+public function kontruksi()
+{
+    return $this->hasOne(Kontruksi::class, 'no_kontrak', 'no_kontrak');  // Relasi satu-ke-satu dengan Kontruksi
+}
+
+
 }

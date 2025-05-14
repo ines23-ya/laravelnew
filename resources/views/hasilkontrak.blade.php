@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Data Kontrak</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome for icons -->
     <style>
         * {
             margin: 0;
@@ -60,12 +61,13 @@
             width: 95%;
             background-color: white;
             color: black;
+            margin-bottom: 10px; /* Reduced space at the bottom */
         }
 
         th, td {
             border: 1px solid #000;
             text-align: center;
-            padding: 8px;
+            padding: 6px 10px; /* Reduced padding for a smaller table */
             font-size: 14px;
         }
 
@@ -80,7 +82,7 @@
 
         .btn-group a {
             padding: 10px 20px;
-            margin: 0 5px;
+            margin: 0 2px;
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
@@ -96,10 +98,41 @@
             background-color: #2d6a4f;
         }
 
+        .icon-btn {
+    font-size: 18px;
+    color: black;
+    background-color: transparent;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    display: block;
+    margin: 0 auto; /* Ensure the icons are centered and aligned */
+    width: 32px; /* Set the width to make sure both icons have the same size */
+    height: 32px; /* Same for height */
+    text-align: center; /* Center the icon inside the button */
+}
+
+.icon-btn-delete {
+    font-size: 18px;
+    color: black;
+    background-color: transparent;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    border: none;
+    display: block;
+    margin: 0 auto; /* Aligns the delete icon the same as the edit icon */
+    width: 32px; /* Same size as the edit icon */
+    height: 32px; /* Same height as the edit icon */
+    text-align: center; /* Ensure icon is centered */
+}
+
+
         h2 {
             font-size: 24px;
             font-weight: bold;
-            margin-bottom: 15px;
+            margin-bottom: 5px;
             color: white;
         }
     </style>
@@ -142,60 +175,67 @@
                 <th>BA LKP</th>
                 <th>BA PP</th>
                 <th>BA ST</th>
+                <th>Action</th> <!-- Action Column -->
             </tr>
         </thead>
         <tbody>
-            @foreach ($kontrak as $index => $kontrak)
+            @foreach ($kontruksi as $index => $kontrak)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $kontrak['pekerjaan'] ?? '-' }}</td>
+                <td>{{ $kontrak->pekerjaan ?? '-' }}</td>
                 <td>
-                    @isset($kontrak['nilai'])
-                        Rp{{ number_format($kontrak['nilai'], 0, ',', '.') }}
+                    @isset($kontrak->pengadaan->nilai_kontrak)
+                        Rp{{ number_format($kontrak->pengadaan->nilai_kontrak, 0, ',', '.') }}
                     @else
                         -
                     @endisset
                 </td>
                 <td>
-                    @isset($kontrak['tanggal_kontrak'])
-                        {{ Carbon::parse($kontrak['tanggal_kontrak'])->format('d-m-Y') }}
+                    @isset($kontrak->pengadaan->tanggal_kontrak)
+                        {{ \Carbon\Carbon::parse($kontrak->pengadaan->tanggal_kontrak)->format('d-m-Y') }}
                     @else
                         -
                     @endisset
                 </td>
-                <td>{{ $kontrak['progres'] ?? '0' }}%</td>
-                <td>{{ $kontrak['keterangan'] ?? '-' }}</td>
+                <td>{{ $kontrak->progres ?? '0' }}%</td>
+                <td>{{ $kontrak->keterangan ?? '-' }}</td>
                 <td>
-                    @if (!empty($kontrak['bp_lkp']))
-                        <a href="{{ asset('storage/' . $kontrak['bp_lkp']) }}" target="_blank">Lihat</a>
+                    @if (!empty($kontrak->bp_lkp))
+                        <a href="{{ asset('storage/' . $kontrak->bp_lkp) }}" target="_blank">Lihat</a>
                     @else
                         -
                     @endif
                 </td>
                 <td>
-                    @if (!empty($kontrak['bp_pp']))
-                        <a href="{{ asset('storage/' . $kontrak['bp_pp']) }}" target="_blank">Lihat</a>
+                    @if (!empty($kontrak->bp_pp))
+                        <a href="{{ asset('storage/' . $kontrak->bp_pp) }}" target="_blank">Lihat</a>
                     @else
                         -
                     @endif
                 </td>
                 <td>
-                    @if (!empty($kontrak['bp_st']))
-                        <a href="{{ asset('storage/' . $kontrak['bp_st']) }}" target="_blank">Lihat</a>
+                    @if (!empty($kontrak->bp_st))
+                        <a href="{{ asset('storage/' . $kontrak->bp_st) }}" target="_blank">Lihat</a>
                     @else
                         -
                     @endif
+                </td>
+                <td>
+                    <!-- Edit Icon (Stacked vertically) -->
+                    <a href="{{ route('kontruksi.edit', $kontrak->id) }}" class="icon-btn"><i class="fas fa-edit"></i></a>
+                    
+                    <!-- Delete Icon (Stacked vertically) -->
+                    <form action="{{ route('kontruksi.destroy', $kontrak->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="icon-btn-delete"><i class="fas fa-trash-alt"></i></button>
+                    </form>
                 </td>
             </tr>
             @endforeach
         </tbody>
     </table>
 
-    <!-- Tombol Navigasi -->
-    <div class="btn-group">
-        <a href="{{ route('halkontruksi') }}" class="btn-back">Back</a>
-        <a href="{{ route('kontrak.create') }}" class="btn-edit">Edit</a>
-    </div>
 </div>
 
 </body>

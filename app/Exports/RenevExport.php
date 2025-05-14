@@ -20,16 +20,18 @@ class RenevExport implements FromCollection, WithTitle, WithEvents
         // Map through the data to match the format we want in Excel (with relations)
         return $this->renevs->map(function ($renev) {
             return [
-                'unsur' => $renev->unsur->name ?? 'N/A',  // Get the name from the related "unsur"
-                'fungsi' => $renev->fungsi->name ?? 'N/A',  // Get the name from the related "fungsi"
-                'no_skko' => $renev->no_skko,
-                'no_prk' => $renev->no_prk,
+                'unsur' => $renev->unsur->nama ?? 'N/A',  // Get the name from the related "unsur"
+                'fungsi' => $renev->fungsi->nama ?? 'N/A',  // Get the name from the related "fungsi"
+                // 'no_skko' => $renev->no_skko,
+                // 'no_prk' => $renev->no_prk,
                 'pekerjaan' => $renev->pekerjaan,
                 'satuan' => $renev->satuan,
                 'volume' => $renev->volume,
                 'total_material' => $renev->total_material,
                 'total_jasa' => $renev->total_jasa,
                 'jumlah_pagu' => $renev->jumlah_pagu,
+                 'no_skko' => $renev->no_skko,  // Force Excel to treat as text
+                 'no_prk' => $renev->no_prk,    // Force Excel to treat as text
             ];
         });
     }
@@ -78,14 +80,16 @@ class RenevExport implements FromCollection, WithTitle, WithEvents
                 // Set column headers (ensure correct column order)
                 $event->sheet->setCellValue('A2', 'Unsur');
                 $event->sheet->setCellValue('B2', 'Fungsi');
-                $event->sheet->setCellValue('I2', 'SKKO');
-                $event->sheet->setCellValue('J2', 'No PRK');
+                
                 $event->sheet->setCellValue('C2', 'Pekerjaan');
                 $event->sheet->setCellValue('D2', 'Satuan');
                 $event->sheet->setCellValue('E2', 'Volume');
                 $event->sheet->setCellValue('F2', 'Total Material (Rp)');
                 $event->sheet->setCellValue('G2', 'Total Jasa (Rp)');
                 $event->sheet->setCellValue('H2', 'Jumlah Pagu (Rp)');
+
+                $event->sheet->setCellValue('I2', 'SKKO');
+                $event->sheet->setCellValue('J2', 'No PRK');
           
 
                 // Apply borders to the entire table (including header)

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -189,4 +189,4 @@
     document.getElementById('total_jasa').addEventListener('input', updateJumlahPagu);
   </script>
 </body>
-</html>
+</html> --}}

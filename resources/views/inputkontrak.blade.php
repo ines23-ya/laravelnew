@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Input Data Pekerjaan dan Kontrak</title>
     <style>
+        /* Your existing styles */
         * {
             margin: 0;
             padding: 0;
@@ -117,11 +118,6 @@
             background-color: #1b4332;
         }
 
-      
-
-        .btn-back:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>

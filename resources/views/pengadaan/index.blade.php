@@ -1,5 +1,20 @@
 @extends('layout.pengadaan.index')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    .btn-pilih {
+        background-color: #007bff; /* Warna Biru */
+        border-color: #007bff; /* Warna Border Biru */
+    }
+
+    .btn-pilih:hover {
+        background-color: #0056b3; /* Warna Biru Tua saat Hover */
+        border-color: #004085; /* Warna Border Biru Tua saat Hover */
+    }
+
+    .action-btn {
+        text-align: center; /* Memposisikan tombol di tengah */
+    }
+</style>
 
 @section('content')
     @include('layout.sidebar')
@@ -24,7 +39,7 @@
                         <td>{{ $item->unsur->nama ?? '-' }}</td>
                         <td>{{ $item->fungsi->nama ?? '-' }}</td>
                         <td>{{ $item->no_prk ?? '-' }}</td>
-                        <td>
+                        <td class="action-btn">
                             @php
                                 $unsurId = $item->unsur->id ?? null;
                                 $fungsiId = $item->fungsi->id ?? null;
@@ -33,18 +48,18 @@
                             @if (session()->has('selected_no_prk') && session('selected_no_prk') == $item->no_prk)
                                 <button class="btn btn-secondary btn-sm" disabled data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Sudah Dipilih">
-                                    <i class="bi bi-check-circle"></i> <span class="d-none d-sm-inline">Sudah Dipilih</span>
+                                    <span class="d-none d-sm-inline">Sudah Dipilih</span>
                                 </button>
                             @elseif ($unsurId && $fungsiId)
                                 <a href="{{ route('pbj.create', ['no_prk' => $item->no_prk, 'unsur' => $unsurId, 'fungsi' => $fungsiId]) }}"
-                                    class="btn btn-primary btn-sm" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    class="btn btn-pilih btn-sm" data-bs-toggle="tooltip" data-bs-placement="top"
                                     title="Pilih Pengadaan">
-                                    <i class="bi bi-check-square"></i> <span class="d-none d-sm-inline">Pilih</span>
+                                    <span class="d-none d-sm-inline">Pilih</span>
                                 </a>
                             @else
                                 <button class="btn btn-warning btn-sm" disabled data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="Unsur atau Fungsi belum lengkap">
-                                    <i class="bi bi-exclamation-circle"></i> <span class="d-none d-sm-inline">Data Tidak Lengkap</span>
+                                    <span class="d-none d-sm-inline">Data Tidak Lengkap</span>
                                 </button>
                             @endif
                         </td>
