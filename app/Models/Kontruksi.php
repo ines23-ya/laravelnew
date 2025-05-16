@@ -22,8 +22,8 @@ class Kontruksi extends Model
         return $this->hasMany(Keuangan::class, 'no_kontrak', 'no_kontrak');
     }
     public function renev()
-{
-    return $this->belongsTo(Renev::class, 'no_kontrak', 'no_kontrak');
-}
+    {
+        return $this->belongsTo(Renev::class, 'no_kontrak', 'no_kontrak');
+    }
 
 }

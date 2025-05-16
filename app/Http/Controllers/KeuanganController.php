@@ -12,6 +12,7 @@ class KeuanganController extends Controller
         // Mengambil data dari tabel Renev, Pengadaan, dan Kontruksi dengan relasi
         $renevs = Renev::with(['pengadaan', 'kontruksi'])->get();  // Mengambil relasi langsung
 
+        
         // Gabungkan data untuk dikirim ke tampilan (keuangan)
         $data_keuangan = $renevs->map(function ($reneve) {
             return [
